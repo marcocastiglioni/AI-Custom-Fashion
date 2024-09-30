@@ -1,14 +1,29 @@
 // Importar dependencias principales
-const express = require('express');
-const cors = require('cors');
-const pool = require('./database/postgresql');
-const connectToMongoDB = require('./database/mongodb');
-const fs = require('fs');
-const path = require('path');
-const bodyParser = require('body-parser');
-const { notFoundHandler, errorHandler } = require('./utils/errorHandling');
-const logger = require('./utils/logger');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); 
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import pool from './database/postgresql.js';
+import { connectToMongoDB } from './database/mongodb.js';
+import fs from 'fs';
+import path from 'path';
+import bodyParser from 'body-parser';
+import { notFoundHandler, errorHandler } from './utils/errorHandling.js';
+import { logger } from './utils/logger.js';
+import { fileURLToPath } from 'url';
+
+// Rutas
+import userRoutes from './routes/userRoutes.js';
+import customizationRoutes from './routes/customizationRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import scanRoutes from './routes/scanRoutes.js';
+
+
+// Necesario para simular __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Cargar el archivo .env desde la raíz del proyecto
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Crear una instancia de Express
 const app = express();
@@ -40,11 +55,6 @@ app.get('/api/orders', async (req, res) => {
   }
 });
 
-// Rutas
-const userRoutes = require('./routes/userRoutes');
-const customizationRoutes = require('./routes/customizationRoutes');
-const orderRoutes = require('./routes/orderRoutes');
-
 // Configurar rutas
 app.use((req, res, next) => {
   console.log(`[APP.js] Solicitud recibida: ${req.method} ${req.originalUrl}`);
@@ -53,6 +63,7 @@ app.use((req, res, next) => {
 app.use('/api/users', userRoutes);
 app.use('/api/customizations', customizationRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/scan', scanRoutes); // Ruta para el escaneo corporal
 
 // Ruta de inicio
 app.get('/', (req, res) => {

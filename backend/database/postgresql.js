@@ -1,5 +1,11 @@
-const { Pool } = require('pg');
-require('dotenv').config({ path: '../.env' }); // Para cargar las variables de entorno desde el archivo .env
+import pkg from 'pg';
+import dotenv from 'dotenv';
+import path from 'path';
+
+const { Pool } = pkg;
+
+// Cargar el archivo .env desde la raíz del proyecto
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Conectar usando la URI correcta desde el archivo .env
 const pool = new Pool({
@@ -15,5 +21,5 @@ pool.connect((err) => {
   }
 });
 
-// Exportar el pool para usar en otros módulos
-module.exports = pool;
+// Exportar el pool para usarlo en otros archivos
+export default pool;

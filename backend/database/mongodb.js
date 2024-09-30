@@ -1,16 +1,15 @@
-const mongoose = require('mongoose');
-require('dotenv').config({ path: '../.env' }); // Para cargar las variables de entorno desde el archivo .env
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Cargar el archivo .env desde la raíz del proyecto
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // URL de conexión a MongoDB, obtenida desde las variables de entorno
 const mongoUri = process.env.MONGODB_URI;
 
-if (!mongoUri) {
-  console.error("[MONGODB.js] Error: MONGO_URI no está definido en el archivo .env");
-  process.exit(1);  // Termina el proceso si la URI no está definida
-}
-
 // Función para conectar a MongoDB
-const connectToMongoDB = async () => {
+export const connectToMongoDB = async () => {
   try {
     await mongoose.connect( mongoUri )
     .then(() => {
@@ -24,9 +23,3 @@ const connectToMongoDB = async () => {
     process.exit(1); // Terminar el proceso si la conexión falla
   }
 };
-
-// Llamar a la función de conexión
-connectToMongoDB();
-
-// Exportar la conexión de mongoose
-module.exports = connectToMongoDB;

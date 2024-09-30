@@ -1,4 +1,7 @@
-require('dotenv').config(); // Cargar variables de entorno desde .env
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Definir configuraciones para diferentes entornos
 const config = {
@@ -26,4 +29,4 @@ const config = {
 };
 
 // Exportar la configuración para ser usada en toda la aplicación
-module.exports = config;
+export default config;

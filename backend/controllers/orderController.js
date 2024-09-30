@@ -1,9 +1,10 @@
-const { Pool } = require('pg');
-const { sendOrderToFactory } = require('../services/factoryService');
-const pool = require('../database/postgresql');
+import { sendOrderToFactory } from '../services/factoryService.js';
+import pool from '../database/postgresql.js';
+import pkg from 'pg';
+const { Pool } = pkg;
 
 // Obtener todos los pedidos
-exports.getOrders = async (req, res) => {
+const getOrders = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM orders');
     res.json(result.rows);  // Enviar los resultados al frontend
@@ -14,7 +15,7 @@ exports.getOrders = async (req, res) => {
 };
 
 // Crear un nuevo pedido
-exports.createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   const { userId, shirtColor, shirtStyle, size, quantity } = req.body;
 
   try {
@@ -43,7 +44,7 @@ exports.createOrder = async (req, res) => {
 };
 
 // Obtener un pedido por su ID
-exports.getOrderById = async (req, res) => {
+const getOrderById = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -67,7 +68,7 @@ exports.getOrderById = async (req, res) => {
 };
 
 // Obtener todos los pedidos de un usuario específico
-exports.getOrdersByUser = async (req, res) => {
+const getOrdersByUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -91,7 +92,7 @@ exports.getOrdersByUser = async (req, res) => {
 };
 
 // Actualizar el estado de un pedido
-exports.updateOrderStatus = async (req, res) => {
+const updateOrderStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
@@ -119,3 +120,11 @@ exports.updateOrderStatus = async (req, res) => {
     });
   }
 };
+
+export {
+  getOrders,
+  createOrder,
+  getOrderById,
+  getOrdersByUser,
+  updateOrderStatus
+}

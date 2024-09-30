@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import CustomizationList from './components/CustomizationList';
 import PersonalizationComponent from './components/PersonalizationComponent';
@@ -7,13 +7,26 @@ import OrderComponent from './components/OrderComponent';
 import CreateOrder from './components/CreateOrder';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ImageCapture from './components/ImageCapture';
+import AvatarViewer from './components/AvatarViewer';
 
 const App = () => {
+  const [avatarUrl, setAvatarUrl] = useState(null);
+
   return (
     <Router>
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
       {/* Agrega el header en la parte superior de la aplicación */}
       <Header />
+
+      <div>
+        <h1>Escaneo Corporal AI</h1>
+        {!avatarUrl ? (
+          <ImageCapture setAvatarUrl={setAvatarUrl} />
+        ) : (
+          <AvatarViewer avatarUrl={avatarUrl} />
+        )}
+      </div>
 
       {/* Rutas de la aplicación */}
       <main className="flex-grow">

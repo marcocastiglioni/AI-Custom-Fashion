@@ -1,5 +1,5 @@
-const axios = require('axios');
-const config = require('../config/config');
+import axios from 'axios';
+import config from '../config/config.js';
 
 // Servicio para enviar especificaciones de prendas personalizadas a la fábrica
 const sendOrderToFactory = async (orderDetails) => {
@@ -43,6 +43,6 @@ const sendOrderToFactory = async (orderDetails) => {
   }
 };
 
-module.exports = {
+export {
   sendOrderToFactory
 };

@@ -1,7 +1,7 @@
-const User = require('../models/User');
+import User from '../models/User.js';
 
 // Crear un nuevo usuario
-exports.createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const newUser = new User(req.body);
     await newUser.save();
@@ -12,7 +12,7 @@ exports.createUser = async (req, res) => {
 };
 
 // Obtener un usuario por ID
-exports.getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -23,3 +23,8 @@ exports.getUser = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener usuario' });
   }
 };
+
+export {
+  createUser,
+  getUser
+}

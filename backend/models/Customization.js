@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const customizationSchema = new mongoose.Schema({
   userId: { type: String, required: true },
@@ -6,4 +6,7 @@ const customizationSchema = new mongoose.Schema({
   shirtStyle: { type: String, required: true },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Customization', customizationSchema);
+const Customization = mongoose.model('Customization', customizationSchema);
+
+// Exportar el modelo como default
+export default Customization;

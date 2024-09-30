@@ -1,7 +1,7 @@
-const Customization = require('../models/Customization');
+import Customization from '../models/Customization.js';
 
 // Crear una nueva personalización
-exports.createCustomization = async (req, res, next) => {
+const createCustomization = async (req, res, next) => {
   try {
     console.log('[Controller] Create Customization');
     const { userId, shirtColor, shirtStyle } = req.body;  // Verifica los datos que recibes
@@ -22,7 +22,7 @@ exports.createCustomization = async (req, res, next) => {
 };
 
 // Obtener una personalización por su ID
-exports.getCustomizationById = async (req, res) => {
+const getCustomizationById = async (req, res) => {
   try {
     const customization = await Customization.findById(req.params.id);
     if (!customization) {
@@ -35,7 +35,7 @@ exports.getCustomizationById = async (req, res) => {
 };
 
 // Obtener todas las personalizaciones de un usuario específico
-exports.getCustomizationsByUser = async (req, res) => {
+const getCustomizationsByUser = async (req, res) => {
   try {
     const customizations = await Customization.find({ userId: req.params.userId });
     if (customizations.length === 0) {
@@ -48,7 +48,7 @@ exports.getCustomizationsByUser = async (req, res) => {
 };
 
 // Actualizar una personalización existente
-exports.updateCustomization = async (req, res) => {
+const updateCustomization = async (req, res) => {
   try {
     const customization = await Customization.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!customization) {
@@ -59,3 +59,10 @@ exports.updateCustomization = async (req, res) => {
     res.status(500).json({ message: 'Error al actualizar la personalización', error });
   }
 };
+
+export {
+  createCustomization,
+  getCustomizationById,
+  getCustomizationsByUser,
+  updateCustomization
+}

@@ -7,4 +7,4 @@ const createOrder = async (orderData) => {
   await pool.query(query, [userId, shirtColor, shirtStyle]);
 };
 
-module.exports = { createOrder };
+export default createOrder;
