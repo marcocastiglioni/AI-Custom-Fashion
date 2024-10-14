@@ -3,13 +3,8 @@ import Customization from '../models/Customization.js';
 // Crear una nueva personalización
 const createCustomization = async (req, res, next) => {
   try {
-    console.log('[Controller] Create Customization');
     const { userId, shirtColor, shirtStyle } = req.body;  // Verifica los datos que recibes
-    const newCustomization = new Customization({
-      userId,
-      shirtColor,
-      shirtStyle
-    });
+    const newCustomization = new Customization({ userId, shirtColor, shirtStyle });
 
     await newCustomization.save(); // Guardar la personalización en MongoDB
 

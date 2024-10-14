@@ -10,13 +10,15 @@ import bodyParser from 'body-parser';
 import { notFoundHandler, errorHandler } from './utils/errorHandling.js';
 import { logger } from './utils/logger.js';
 import { fileURLToPath } from 'url';
+import morgan from 'morgan';
 
 // Rutas
-import userRoutes from './routes/userRoutes.js';
-import customizationRoutes from './routes/customizationRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import scanRoutes from './routes/scanRoutes.js';
-
+import userRoutes           from './routes/userRoutes.js';
+import customizationRoutes  from './routes/customizationRoutes.js';
+import orderRoutes          from './routes/orderRoutes.js';
+import scanRoutes           from './routes/scanRoutes.js';
+import avatarRoutes         from './routes/avatarRoutes.js';
+import authRoutes           from './routes/authRoutes.js';
 
 // Necesario para simular __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +30,13 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // Crear una instancia de Express
 const app = express();
 
+// Middleware para analizar el cuerpo de las solicitudes como JSON
+app.use(express.json({ limit: '50mb' }));  // Aumentar el límite para JSON (si fuera necesario)
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Use Morgan for HTTP request logging
+app.use(morgan('combined'));
+
 // Middleware
 // Habilitar CORS para todas las solicitudes
 app.use(cors({
@@ -37,9 +46,7 @@ app.use(cors({
 }));
 app.options('*', cors());  // Permitir preflight requests en todas las rutas
 app.use(bodyParser.json());
-
-// Middleware para analizar el cuerpo de las solicitudes como JSON
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Conexión a MongoDB
 connectToMongoDB();
@@ -63,7 +70,12 @@ app.use((req, res, next) => {
 app.use('/api/users', userRoutes);
 app.use('/api/customizations', customizationRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/scan', scanRoutes); // Ruta para el escaneo corporal
+app.use('/api/scan', scanRoutes);
+app.use('/api/avatars', avatarRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/avatars', express.static(path.join(__dirname, 'avatars'))); // 3D Scan
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the uploads directory
 
 // Ruta de inicio
 app.get('/', (req, res) => {

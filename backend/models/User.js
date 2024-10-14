@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 // Definir el esquema de usuario
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
     trim: true, // Elimina espacios en blanco
@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     chest: Number,
     waist: Number,
     hips: Number
+  },
+  meshcapadeUserId: {
+    type: String,
+    required: false, // Initially undefined until created
   }
 }, { timestamps: true });
 
